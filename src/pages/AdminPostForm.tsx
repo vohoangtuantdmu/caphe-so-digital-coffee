@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { RichTextEditor } from "@/components/RichTextEditor";
+import { TinyMCEEditor } from "@/components/TinyMCEEditor";
 import { toast } from "@/hooks/use-toast";
 import { ArrowLeft } from "lucide-react";
 
@@ -196,141 +196,213 @@ export const AdminPostForm = () => {
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tiêu đề</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Nhập tiêu đề bài viết..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                  {/* Main Content Area - 70% */}
+                  <div className="lg:col-span-3 space-y-6">
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-lg font-semibold">Tiêu đề bài viết</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Nhập tiêu đề bài viết..." 
+                              className="text-lg py-3"
+                              {...field} 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="slug"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Slug (URL thân thiện)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="url-than-thien-cho-bai-viet" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="content"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-lg font-semibold">Nội dung bài viết</FormLabel>
+                          <FormControl>
+                            <div className="border rounded-lg overflow-hidden">
+                              <TinyMCEEditor
+                                value={field.value}
+                                onChange={field.onChange}
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Danh mục</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Chọn danh mục" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem key={category} value={category}>
-                              {category}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="excerpt"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mô tả ngắn (tùy chọn)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Mô tả ngắn gọn về bài viết..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="featured_image_url"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>URL ảnh đại diện (tùy chọn)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://example.com/image.jpg" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nội dung</FormLabel>
-                      <FormControl>
-                        <RichTextEditor
-                          content={field.value}
-                          onChange={field.onChange}
+                  {/* Sidebar - 30% */}
+                  <div className="lg:col-span-1 space-y-6">
+                    {/* Publish Box */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Xuất bản</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="published"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-center justify-between">
+                              <div className="space-y-0.5">
+                                <FormLabel className="text-base">Trạng thái</FormLabel>
+                                <div className="text-sm text-muted-foreground">
+                                  {field.value ? "Công khai" : "Bản nháp"}
+                                </div>
+                              </div>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          )}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="published"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel className="text-base">Xuất bản bài viết</FormLabel>
-                        <div className="text-sm text-muted-foreground">
-                          Bài viết sẽ hiển thị công khai trên website
+                        
+                        <div className="flex flex-col gap-2">
+                          <Button 
+                            type="submit" 
+                            disabled={loading}
+                            className="w-full"
+                            onClick={() => form.setValue("published", false)}
+                          >
+                            {loading ? "Đang lưu..." : "Lưu nháp"}
+                          </Button>
+                          <Button 
+                            type="submit" 
+                            disabled={loading}
+                            variant="default"
+                            className="w-full bg-primary hover:bg-primary/90"
+                            onClick={() => form.setValue("published", true)}
+                          >
+                            {loading ? "Đang đăng..." : (id ? "Cập nhật & Đăng" : "Đăng bài")}
+                          </Button>
                         </div>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+                      </CardContent>
+                    </Card>
 
-                <div className="flex gap-4">
-                  <Button 
-                    type="submit" 
-                    disabled={loading}
-                    className="bg-primary hover:bg-primary/90"
-                  >
-                    {loading ? "Đang lưu..." : "Lưu bài viết"}
-                  </Button>
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={() => navigate('/admin')}
-                  >
-                    Hủy
-                  </Button>
+                    {/* Category Box */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Danh mục</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <FormField
+                          control={form.control}
+                          name="category"
+                          render={({ field }) => (
+                            <FormItem>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Chọn danh mục" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {categories.map((category) => (
+                                    <SelectItem key={category} value={category}>
+                                      {category}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </CardContent>
+                    </Card>
+
+                    {/* Featured Image Box */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">Ảnh đại diện</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <FormField
+                          control={form.control}
+                          name="featured_image_url"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input 
+                                  placeholder="https://example.com/image.jpg" 
+                                  {...field} 
+                                />
+                              </FormControl>
+                              {field.value && (
+                                <div className="mt-3">
+                                  <img 
+                                    src={field.value} 
+                                    alt="Preview" 
+                                    className="w-full h-32 object-cover rounded-lg border"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = 'none';
+                                    }}
+                                  />
+                                </div>
+                              )}
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </CardContent>
+                    </Card>
+
+                    {/* SEO Box */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-lg">SEO</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="slug"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>URL Slug</FormLabel>
+                              <FormControl>
+                                <Input placeholder="url-than-thien" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="excerpt"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Mô tả ngắn</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Mô tả ngắn gọn..." {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </CardContent>
+                    </Card>
+
+                    {/* Cancel Button */}
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => navigate('/admin')}
+                      className="w-full"
+                    >
+                      Hủy
+                    </Button>
+                  </div>
                 </div>
               </form>
             </Form>
