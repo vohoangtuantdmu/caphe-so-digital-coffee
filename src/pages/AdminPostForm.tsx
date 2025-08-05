@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { TinyMCEEditor } from "@/components/TinyMCEEditor";
+import { EditorWrapper } from "@/components/EditorWrapper";
 import { toast } from "@/hooks/use-toast";
 import { ArrowLeft } from "lucide-react";
 
@@ -114,10 +114,25 @@ export const AdminPostForm = () => {
   };
 
   const onSubmit = async (data: FormData) => {
-    if (!user) return;
+    console.log('Form submitted with data:', data);
+    console.log('Current user:', user);
+    
+    if (!user) {
+      toast({
+        title: "Lỗi xác thực",
+        description: "Bạn cần đăng nhập để thực hiện thao tác này",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setLoading(true);
     try {
+      // Validate required fields
+      if (!data.title || !data.content || !data.category || !data.slug) {
+        throw new Error("Vui lòng điền đầy đủ thông tin bắt buộc");
+      }
+
       const postData = {
         title: data.title,
         slug: data.slug,
@@ -129,27 +144,39 @@ export const AdminPostForm = () => {
         published: data.published,
       };
 
+      console.log('Saving post data:', postData);
+
       if (id) {
         // Update existing post
-        const { error } = await supabase
+        const { data: result, error } = await supabase
           .from('posts')
           .update(postData)
-          .eq('id', id);
+          .eq('id', id)
+          .select();
 
-        if (error) throw error;
+        if (error) {
+          console.error('Update error:', error);
+          throw error;
+        }
 
+        console.log('Post updated successfully:', result);
         toast({
           title: "Thành công",
           description: "Đã cập nhật bài viết",
         });
       } else {
         // Create new post
-        const { error } = await supabase
+        const { data: result, error } = await supabase
           .from('posts')
-          .insert(postData);
+          .insert(postData)
+          .select();
 
-        if (error) throw error;
+        if (error) {
+          console.error('Insert error:', error);
+          throw error;
+        }
 
+        console.log('Post created successfully:', result);
         toast({
           title: "Thành công",
           description: "Đã tạo bài viết mới",
@@ -226,7 +253,7 @@ export const AdminPostForm = () => {
                           <FormLabel className="text-lg font-semibold">Nội dung bài viết</FormLabel>
                           <FormControl>
                             <div className="border rounded-lg overflow-hidden">
-                              <TinyMCEEditor
+                              <EditorWrapper
                                 value={field.value}
                                 onChange={field.onChange}
                               />
@@ -269,19 +296,25 @@ export const AdminPostForm = () => {
                         
                         <div className="flex flex-col gap-2">
                           <Button 
-                            type="submit" 
+                            type="button" 
                             disabled={loading}
                             className="w-full"
-                            onClick={() => form.setValue("published", false)}
+                            onClick={() => {
+                              form.setValue("published", false);
+                              form.handleSubmit(onSubmit)();
+                            }}
                           >
                             {loading ? "Đang lưu..." : "Lưu nháp"}
                           </Button>
                           <Button 
-                            type="submit" 
+                            type="button" 
                             disabled={loading}
                             variant="default"
                             className="w-full bg-primary hover:bg-primary/90"
-                            onClick={() => form.setValue("published", true)}
+                            onClick={() => {
+                              form.setValue("published", true);
+                              form.handleSubmit(onSubmit)();
+                            }}
                           >
                             {loading ? "Đang đăng..." : (id ? "Cập nhật & Đăng" : "Đăng bài")}
                           </Button>
