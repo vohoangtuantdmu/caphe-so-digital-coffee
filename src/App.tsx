@@ -5,10 +5,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Layout } from "@/components/Layout";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Home } from "@/pages/Home";
 import { About } from "@/pages/About";
 import { Menu } from "@/pages/Menu";
 import { Auth } from "@/pages/Auth";
+import { Admin } from "@/pages/Admin";
+import { AdminPostForm } from "@/pages/AdminPostForm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +29,30 @@ const App = () => (
               <Route path="/gioi-thieu" element={<About />} />
               <Route path="/thuc-don" element={<Menu />} />
               <Route path="/auth" element={<Auth />} />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute>
+                    <Admin />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/posts/new" 
+                element={
+                  <ProtectedRoute>
+                    <AdminPostForm />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/posts/edit/:id" 
+                element={
+                  <ProtectedRoute>
+                    <AdminPostForm />
+                  </ProtectedRoute>
+                } 
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
