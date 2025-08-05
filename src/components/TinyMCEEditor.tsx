@@ -8,7 +8,7 @@ interface TinyMCEEditorProps {
 export const TinyMCEEditor = ({ value, onChange }: TinyMCEEditorProps) => {
   return (
     <Editor
-      apiKey="qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc" // Free API key for demo
+      apiKey="rpj9yh9ds9kunybhvm9uhh5g29s1qwf7ct8z6s0gj96ui25y"
       value={value}
       onEditorChange={(content) => onChange(content)}
       init={{
