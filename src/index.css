@@ -134,7 +134,7 @@
 }
 
 .blog-content a {
-  @apply text-primary hover:text-primary-dark underline decoration-primary/30 hover:decoration-primary transition-colors;
+  @apply text-primary hover:text-primary/80 underline decoration-primary/30 hover:decoration-primary transition-colors;
 }
 
 .blog-content img {

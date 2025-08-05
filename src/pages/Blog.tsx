@@ -223,7 +223,7 @@ export const Blog = () => {
                     {getExcerpt(post)}
                   </p>
                   <Link to={`/blog/${post.slug}`}>
-                    <Button variant="ghost" className="w-full justify-start p-0 h-auto font-medium text-primary hover:text-primary-dark">
+                    <Button variant="ghost" className="w-full justify-start p-0 h-auto font-medium text-primary hover:text-primary/80">
                       Đọc tiếp →
                     </Button>
                   </Link>
