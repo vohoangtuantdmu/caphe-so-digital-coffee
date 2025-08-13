@@ -1,259 +1,208 @@
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CheckCircle2 } from "lucide-react";
 
-interface MenuItem {
+interface SetMenuItem {
   id: string;
   name: string;
   description: string;
   price: number;
-  category: string;
-  image?: string;
-  popular?: boolean;
-  hot?: boolean;
+  includes: string[];
+  images: string[];
 }
 
-const menuItems: MenuItem[] = [
-  // Cà phê phin
+const setMenus: SetMenuItem[] = [
   {
-    id: "1",
-    name: "Cà Phê Phin Đen",
-    description: "Cà phê đen truyền thống, đậm đà hương vị Việt Nam",
-    price: 25000,
-    category: "coffee-filter",
-    popular: true
+    id: "set-4-nguoi",
+    name: "Mâm Cơm Sum Họp (4 người)",
+    description:
+      "Mâm cơm thịnh soạn được thiết kế cho nhóm bạn bè hoặc gia đình nhỏ, hội tụ đủ các hương vị mặn, ngọt, chua, cay, đảm bảo một bữa ăn trọn vẹn và đáng nhớ.",
+    price: 599000,
+    includes: [
+      "Cơm niêu (4 người)",
+      "2 Món mặn tự chọn",
+      "1 Món xào theo mùa",
+      "1 Món canh đậm vị",
+      "Tráng miệng",
+    ],
+    images: ["/Set4Nguoi/Set4Nguoi1.jpg", "/Set4Nguoi/SetCom.png"],
   },
   {
-    id: "2",
-    name: "Cà Phê Phin Sữa",
-    description: "Cà phê phin kết hợp với sữa đặc, ngọt ngào đậm đà",
-    price: 30000,
-    category: "coffee-filter",
-    popular: true
+    id: "set-gia-dinh",
+    name: "Mâm Cơm Gia Đình (6-8 người)",
+    description:
+      "Lựa chọn hoàn hảo cho những buổi sum vầy đông đủ. Mâm cơm đầy đặn, đa dạng các món ăn đặc sắc nhất của Mạ, như một lời chúc phúc cho sự đoàn viên.",
+    price: 899000,
+    includes: [
+      "Cơm niêu (6-8 người)",
+      "3 Món mặn đặc sắc",
+      "2 Món xào/luộc",
+      "1 Món canh lớn",
+      "Salad khai vị",
+      "Trái cây theo mùa",
+    ],
+    images: [
+      "/SetGiaDinh/setGiaDinh1.jpg",
+      "/SetGiaDinh/GiaDinh2.jpg",
+      "/SetGiaDinh/GiaDinh3.jpg",
+      "/SetGiaDinh/GiaDinh4.jpg",
+    ],
   },
   {
-    id: "3",
-    name: "Cà Phê Phin Sữa Đá",
-    description: "Phiên bản lạnh của cà phê phin sữa, thanh mát",
-    price: 32000,
-    category: "coffee-filter"
-  },
-  
-  // Cà phê máy
-  {
-    id: "4",
-    name: "Espresso",
-    description: "Shot cà phê đậm đặc, tinh túy của hương vị",
-    price: 35000,
-    category: "coffee-machine",
-    hot: true
-  },
-  {
-    id: "5",
-    name: "Americano",
-    description: "Espresso pha loãng với nước nóng, nhẹ nhàng",
-    price: 40000,
-    category: "coffee-machine"
-  },
-  {
-    id: "6",
-    name: "Cappuccino",
-    description: "Espresso, sữa nóng và bọt sữa, cân bằng hoàn hảo",
-    price: 45000,
-    category: "coffee-machine",
-    popular: true
+    id: "set-tu-chon",
+    name: "Mâm Cơm Tự Chọn",
+    description:
+      "Tự tay xây dựng mâm cơm theo khẩu vị riêng của bạn và gia đình. Lựa chọn từ thực đơn các món ăn dân dã, đồng quê được chế biến bởi bếp của Mạ.",
+    price: 0,
+    includes: [
+      "Cá kho tộ",
+      "Thịt luộc mắm tôm",
+      "Canh cua rau đay",
+      "Rau muống xào tỏi",
+      "Gà rang gừng",
+      "Sườn xào chua ngọt",
+      "Và nhiều món khác...",
+    ],
+    images: [
+      "/SetTuChon/SetCom1.png",
+      "/SetTuChon/SetCom2.png",
+      "/SetTuChon/SetCom3.jpg",
+      "/SetTuChon/SetCom4.jpg",
+      "/SetTuChon/SetCom5.png",
+    ],
   },
   {
-    id: "7",
-    name: "Latte",
-    description: "Espresso với nhiều sữa nóng, mềm mại",
-    price: 48000,
-    category: "coffee-machine"
+    id: "set-chay",
+    name: "Mâm Cơm Chay Thanh Tịnh",
+    description:
+      "Dành cho những ngày muốn thưởng thức ẩm thực nhẹ nhàng và thanh đạm. Mâm cơm chay được chế biến tinh tế từ các loại rau củ tươi ngon, giữ trọn vị ngọt tự nhiên.",
+    price: 499000,
+    includes: [
+      "Cơm niêu (4 người)",
+      "Đậu hũ non sốt nấm",
+      "Rau củ thập cẩm xào",
+      "Nấm kho tiêu xanh",
+      "Canh rong biển",
+      "Gỏi nấm",
+    ],
+    images: ["/ComChay/ComChay1.jpg"],
   },
-  
-  // Đồ uống khác
-  {
-    id: "8",
-    name: "Trà Đào Cam Sả",
-    description: "Trà thảo mộc thơm mát với đào, cam và sả",
-    price: 35000,
-    category: "tea"
-  },
-  {
-    id: "9",
-    name: "Trà Sữa Trân Châu",
-    description: "Trà sữa đài loan với trân châu đen dai ngon",
-    price: 42000,
-    category: "tea",
-    popular: true
-  },
-  {
-    id: "10",
-    name: "Sinh Tố Bơ",
-    description: "Sinh tố bơ tươi, béo ngậy, bổ dưỡng",
-    price: 45000,
-    category: "smoothie"
-  },
-  
-  // Bánh ngọt
-  {
-    id: "11",
-    name: "Bánh Tiramisu",
-    description: "Bánh tiramisu Ý authentic với cà phê espresso",
-    price: 55000,
-    category: "dessert",
-    hot: true
-  },
-  {
-    id: "12",
-    name: "Bánh Croissant",
-    description: "Bánh croissant bơ Pháp, giòn rụm thơm ngon",
-    price: 35000,
-    category: "dessert"
-  },
-  {
-    id: "13",
-    name: "Bánh Cheesecake",
-    description: "Bánh phô mai mềm mịn với base bánh quy",
-    price: 50000,
-    category: "dessert"
-  }
-];
-
-const categories = [
-  { id: "all", name: "Tất Cả", count: menuItems.length },
-  { id: "coffee-filter", name: "Cà Phê Phin", count: menuItems.filter(item => item.category === "coffee-filter").length },
-  { id: "coffee-machine", name: "Cà Phê Máy", count: menuItems.filter(item => item.category === "coffee-machine").length },
-  { id: "tea", name: "Trà & Đồ Uống", count: menuItems.filter(item => item.category === "tea").length },
-  { id: "smoothie", name: "Sinh Tố", count: menuItems.filter(item => item.category === "smoothie").length },
-  { id: "dessert", name: "Bánh Ngọt", count: menuItems.filter(item => item.category === "dessert").length }
 ];
 
 export const Menu = () => {
-  const [activeCategory, setActiveCategory] = useState("all");
-
-  const filteredItems = activeCategory === "all" 
-    ? menuItems 
-    : menuItems.filter(item => item.category === activeCategory);
-
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND'
+    if (price === 0) {
+      return "Giá theo món";
+    }
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
     }).format(price);
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-brand-cream">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-warm">
+      <section className="py-20 bg-brand-brown/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Thực Đơn <span className="text-primary">Cà Phê Số</span>
+          <h1 className="font-serif text-4xl md:text-5xl font-bold text-brand-brown mb-6">
+            Thực Đơn Của <span className="text-brand-orange">Mạ</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Khám phá menu đa dạng với những hương vị đặc biệt, 
-            từ cà phê truyền thống đến các món đồ uống hiện đại
+          <p className="text-xl text-brand-text/80 max-w-3xl mx-auto">
+            Khám phá những mâm cơm được chuẩn bị bằng cả tâm huyết, gói trọn
+            hương vị truyền thống Việt Nam trong từng món ăn.
           </p>
         </div>
       </section>
 
-      {/* Menu Section */}
+      {/* Menu Section - Bố cục mới cho các Set Cơm */}
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 mb-8">
-              {categories.map((category) => (
-                <TabsTrigger key={category.id} value={category.id} className="text-sm">
-                  {category.name} ({category.count})
-                </TabsTrigger>
-              ))}
-            </TabsList>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+          {setMenus.map((set, index) => (
+            <div
+              key={set.id}
+              className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+                index % 2 !== 0 ? "lg:grid-flow-col-dense" : ""
+              }`}
+            >
+              {/* Cột Hình ảnh */}
+              <div
+                className={`grid grid-cols-2 gap-4 ${
+                  index % 2 !== 0 ? "lg:col-start-2" : ""
+                }`}
+              >
+                {set.images.map((img, imgIndex) => (
+                  <div
+                    key={imgIndex}
+                    className={`rounded-lg overflow-hidden shadow-lg ${
+                      imgIndex === 0 ? "col-span-2" : "col-span-1"
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`${set.name} image ${imgIndex + 1}`}
+                      className="w-full h-full object-cover aspect-video"
+                    />
+                  </div>
+                ))}
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredItems.map((item) => (
-                <Card key={item.id} className="overflow-hidden hover:shadow-coffee transition-shadow duration-300">
-                  {item.image ? (
-                    <div className="h-48 overflow-hidden">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="h-48 bg-gradient-coffee flex items-center justify-center">
-                      <span className="text-primary-foreground text-lg font-medium">
-                        {item.name}
-                      </span>
-                    </div>
-                  )}
-                  
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg">{item.name}</CardTitle>
-                        <CardDescription className="mt-2">
-                          {item.description}
-                        </CardDescription>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        {item.popular && (
-                          <Badge variant="default" className="text-xs">
-                            Phổ biến
-                          </Badge>
-                        )}
-                        {item.hot && (
-                          <Badge variant="destructive" className="text-xs">
-                            Hot
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold text-primary">
-                        {formatPrice(item.price)}
-                      </span>
-                      <Button size="sm">
-                        Thêm vào giỏ
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </Tabs>
+              {/* Cột Thông tin */}
+              <div className="flex flex-col justify-center">
+                <h2 className="font-serif text-3xl font-bold text-brand-brown">
+                  {set.name}
+                </h2>
+                <p className="mt-4 text-brand-text/80">{set.description}</p>
 
-          {filteredItems.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg">
-                Không tìm thấy món nào trong danh mục này.
-              </p>
+                <ul className="mt-6 space-y-2">
+                  {set.includes.map((item, itemIndex) => (
+                    <li key={itemIndex} className="flex items-center">
+                      <CheckCircle2 className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-8 flex items-center justify-between">
+                  <span className="text-4xl font-bold font-serif text-brand-orange">
+                    {formatPrice(set.price)}
+                  </span>
+                  <Button
+                    size="lg"
+                    className="bg-brand-brown hover:bg-brand-brown/90 text-white font-bold"
+                  >
+                    Chọn Mâm Cơm Này
+                  </Button>
+                </div>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-card">
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
-            Sẵn Sàng Thưởng Thức?
+          <h2 className="font-serif text-3xl font-bold text-brand-brown mb-4">
+            Sẵn Sàng Sum Vầy Bên Mâm Cơm Của Mạ?
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Ghé thăm Cà Phê Số ngay hôm nay để trải nghiệm những hương vị tuyệt vời này!
+          <p className="text-xl text-brand-text/80 mb-8">
+            Hãy để Cơm Niêu Mạ Làm mang đến cho bạn và người thân những khoảnh
+            khắc ấm cúng và đáng nhớ.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg">
+            <Button
+              size="lg"
+              className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold"
+            >
               Đặt Bàn Ngay
             </Button>
-            <Button size="lg" variant="outline">
-              Gọi Điện: (028) 1234 5678
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-white"
+            >
+              Gọi Điện: (028) 3622 8899
             </Button>
           </div>
         </div>
