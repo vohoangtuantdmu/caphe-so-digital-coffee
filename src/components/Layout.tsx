@@ -113,11 +113,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               </h3>
               <div className="space-y-2 text-brand-text/80">
                 <p>
-                  Địa chỉ: 2 Trương Gia Mô, P. Thạnh Mỹ Lợi, TP. Thủ Đức, TP.
-                  HCM
+                  Địa chỉ: 2 Trương Gia Mô, P. Cát Lái, TP. Thủ Đức, TP. HCM
                 </p>
-                <p>Điện thoại: (028) 3622 8899</p>
-                <p>Email: info@comnieumalam.vn</p>
+                <p>Điện thoại: (0335) 734 979</p>
+                <p>Email: comnieumalam@gmail.com</p>
               </div>
             </div>
 
