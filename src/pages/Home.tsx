@@ -43,7 +43,7 @@ export const Home = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-brand-brown font-bold"
+                className="w-full sm:w-auto border-white text-black hover:bg-white hover:text-brand-brown font-bold"
               >
                 Câu Chuyện Của Mạ
               </Button>
