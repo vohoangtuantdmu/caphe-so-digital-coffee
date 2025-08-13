@@ -129,7 +129,7 @@ export const Home = () => {
               <MapPin className="h-10 w-10 text-brand-orange mx-auto mb-3" />
               <h4 className="font-bold text-lg text-brand-brown">Địa Chỉ</h4>
               <p className="text-brand-text/80">
-                2 Trương Gia Mô, P. Thạnh Mỹ Lợi, TP. Thủ Đức, TP. HCM
+                2 Trương Gia Mô, P. Cát Lái, TP. Thủ Đức, TP. HCM
               </p>
             </div>
           </div>
