@@ -7,10 +7,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 
 import { Home } from "@/pages/Home";
-import { About } from "@/pages/About";
+
 import { Menu } from "@/pages/Menu";
 
 import NotFound from "./pages/NotFound";
+import { AboutPageUltimate } from "./pages/About";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,7 @@ const App = () => (
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/gioi-thieu" element={<About />} />
+            <Route path="/gioi-thieu" element={<AboutPageUltimate />} />
             <Route path="/thuc-don" element={<Menu />} />
 
             <Route path="*" element={<NotFound />} />

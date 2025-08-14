@@ -129,6 +129,49 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 <p>10:00 - 22:30</p>
               </div>
             </div>
+            {/* Cột 4: KHÁM PHÁ THÊM (Cột mới tối ưu SEO) */}
+            <div>
+              <h3 className="text-lg font-semibold text-brand-brown mb-4">
+                Khám Phá Thêm
+              </h3>
+              <div className="space-y-2 text-brand-text/80">
+                {/* Các link này trỏ đến các phần tương ứng trong trang thực đơn hoặc các bài blog */}
+                <p>
+                  <a
+                    href="/thuc-don#com-nieu"
+                    className="hover:text-brand-brown"
+                  >
+                    Cơm niêu ngon Thủ Đức
+                  </a>
+                </p>
+                <p>
+                  <a
+                    href="/thuc-don#mon-kho"
+                    className="hover:text-brand-brown"
+                  >
+                    Các món cá kho tộ
+                  </a>
+                </p>
+                <p>
+                  <a
+                    href="/thuc-don#mon-xao"
+                    className="hover:text-brand-brown"
+                  >
+                    Cơm gia đình giá rẻ
+                  </a>
+                </p>
+                <p>
+                  <a href="/blog" className="hover:text-brand-brown">
+                    Cơm niêu Ngon Cát Lái
+                  </a>
+                </p>
+                <p>
+                  <a href="/dat-tiec" className="hover:text-brand-brown">
+                    Dịch vụ đặt cơm văn phòng
+                  </a>
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="mt-12 pt-8 border-t border-border/50 text-center text-brand-text/60">
